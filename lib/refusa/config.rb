@@ -28,7 +28,7 @@ class Refusa
   include Java
  
   Capybara.register_driver :poltergeist do |app|
-    Capybara::Poltergeist::Driver.new(app, {:phantomjs => File.absolute_path('..\..\vendor\phantomjs\bin\phantomjs.exe'), 
+    Capybara::Poltergeist::Driver.new(app, {:phantomjs => File.absolute_path('..\vendor\phantomjs\bin\phantomjs.exe'), 
                                             :timeout => 120, :debug => true})
   end
   Capybara.default_driver = :poltergeist  

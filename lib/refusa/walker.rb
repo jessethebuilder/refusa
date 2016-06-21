@@ -1,6 +1,7 @@
 require_relative 'walker/search_page'
 require_relative 'walker/query'
 require_relative 'walker/search'
+require_relative 'walker/login'
 
 def wait_until
   #expects block
@@ -19,14 +20,3 @@ def login_url
   'http://ezproxy.pasadenapubliclibrary.net/login?url=http://www.referenceusa.com/login'
 end
 
-def login_user(user_id, url)
-  visit url
-  fill_in 'user', :with => user_id
-  click_button 'Login'
-  
-  post_login
-end
-
-def post_login
-  set_status('Please Select People or Business Search')
-end

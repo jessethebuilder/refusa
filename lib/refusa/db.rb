@@ -15,10 +15,11 @@ end
 def build_db
   db = Sequel.connect('jdbc:sqlite:db.sqlite3')
 
-  unless db.table_exists?(:items)
-    db.create_table :items do
-      column :name, :text
-      column :price, :float
+  unless db.table_exists?(:logins)
+    db.create_table :logins do
+      column :name, :string
+      column :url, :string
+      column :user_id, :string
     end
   end
   db

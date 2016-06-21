@@ -1,15 +1,15 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env jruby
 
-require_relative '../lib/refusa/config'
-require_relative '../lib/refusa/db'
-require_relative '../lib/refusa/walker'
-require_relative '../lib/refusa/views'
+$LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'refusa'
+require 'lib/refusa/config'
+require 'lib/refusa/db'
+require 'lib/refusa/walker'
+require 'lib/refusa/views'
+
+# require 'refusa'
 
 class Refusa
-  
-  
   def initialize
     start_main_form
   end
@@ -22,6 +22,9 @@ class Refusa
         # temp
         # f.send(:login_user, @user_id_fieldf.login_url)
         # f.send(:start_people_search)
+      rescue Exception => e
+        puts e
+        System.exit(0)
       ensure
         @db.close if @db
       end
