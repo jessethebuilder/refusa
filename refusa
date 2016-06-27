@@ -1,41 +1,5 @@
 #!/usr/bin/env jruby
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
+require_relative 'lib/refusa/refusa.rb'
 
-require 'lib/refusa/config'
-require 'lib/refusa/db'
-require 'lib/refusa/walker'
-require 'lib/refusa/views'
-
-# require 'refusa'
-
-class Refusa
-  def initialize
-    start_main_form
-  end
- 
-  def start_main_form
-    SwingUtilities.invoke_later do
-      begin
-        f = MainForm.new
-        
-        # temp
-        # f.send(:login_user, @user_id_fieldf.login_url)
-        # f.send(:start_people_search)
-      rescue Exception => e
-        puts e
-        System.exit(0)
-      ensure
-        @db.close if @db
-      end
-    end 
-  end
-
-
-end
-
-def main
-  Refusa.new
-end
-
-main
+Refusa.new
