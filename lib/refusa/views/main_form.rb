@@ -1,8 +1,11 @@
 class MainForm < JFrame
   include Capybara::DSL
+  include ScrapeUtilities
   
   def initialize 
     super('Ref USA!')
+    
+    @search_type = :business
     
     set_size(600, 400)
     set_visible(true)
@@ -12,6 +15,8 @@ class MainForm < JFrame
     main_panel
     debug_panel  
     
+    #dEBug
+    login_user
   end
   
   #------- Main Panel ------------------------

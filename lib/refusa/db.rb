@@ -8,6 +8,23 @@ Jdbc::SQLite3.load_driver
   # :connection_alive_sql => "SELECT COUNT(*) from test_table"
 # )
 
+::LOGIN_PROTOCOLS = [
+    {:name => 'Pasadena', 
+    :url => 'http://ezproxy.pasadenapubliclibrary.net/login?url=http://www.referenceusa.com/login',
+    :user_id => '29009016461368',
+    :user_id_selector => 'user',
+    :submit_text => 'Login'
+    },
+    {:name => 'SF', 
+    :url => 'http://ezproxy.sfpl.org/login?url=http://www.referenceusa.com/login',
+    :user_id => '21223202546787',
+    :user_id_selector => 'barcode',
+    :pin => '1216',
+    :pin_selector => 'pin', 
+    :submit_text => 'Submit'
+   }
+]
+
 def db
   @db ||= build_db
 end 

@@ -3,7 +3,7 @@ def query_select_fields(panel)
 
   people_button = JButton.new('People Search')
   people_button.add_action_listener do |e|
-    start_people_search
+    start_query :people
     # @debug.set_text(page.html)
   end
   
@@ -12,7 +12,7 @@ def query_select_fields(panel)
   
   business_button = JButton.new('Business Search')
   business_button.add_action_listener do |e|
-    nil
+    start_query(:business)
   end
   panel.add(business_button)
 end

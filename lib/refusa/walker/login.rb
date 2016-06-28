@@ -4,6 +4,7 @@ end
 
 def login_user
   visit @login_protocol[:url]
+  
   fill_in @login_protocol[:user_id_selector], :with => @login_protocol[:user_id]
   
   if @login_protocol.key?(:pin)
@@ -14,23 +15,23 @@ def login_user
   post_login
 end
 
+def accept_terms
+  if /\/Static\/Home$/ =~ page.current_path
+    check 'chkAgree' 
+    page.find(:css, '.action-agree').click 
+    
+    fill_in 'matchcode', :with => @login_protocol[:user_id]
+    page.find(:css, '.action-submit-form').click
+  end
+end
+
 def post_login
-  set_status('Please Select People or Business Search')
+  accept_terms
+  unless @search_type
+    set_status('Please Select People or Business Search')
+  else
+    start_query(@search_type)
+  end
 end  
 
 
-::LOGIN_PROTOCOLS = [
-  {:name => 'Pasadena', 
-    :url => 'http://ezproxy.pasadenapubliclibrary.net/login?url=http://www.referenceusa.com/login',
-    :user_id => '29009016461368',
-    :user_id_selector => 'user',
-    :submit_text => 'Login'},
-  {:name => 'SF', 
-    :url => 'http://ezproxy.sfpl.org/login?url=http://www.referenceusa.com/login',
-    :user_id => '21223202546787',
-    :user_id_selector => 'barcode',
-    :pin => '1216',
-    :pin_selector => 'pin', 
-    :submit_text => 'Submit'
-   }
-]

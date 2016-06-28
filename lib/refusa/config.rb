@@ -6,6 +6,7 @@ require 'jdbc/sqlite3'
 require 'sequel'
 
 require_relative 'modules/f'
+require_relative 'modules/scrape_utilities'
 
 
 import javax.swing.JFrame
@@ -25,18 +26,14 @@ import java.awt.Toolkit
 
 import javax.swing.SwingUtilities
 
-ENV = :development
-
-def development?
-  ENV == :development
-end
+puts ENV.inspect
 
 class Refusa
   include Java
  
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app, {:phantomjs => File.absolute_path('..\vendor\phantomjs\bin\phantomjs.exe'), 
-                                            :timeout => 120, :debug => development?})
+                                            :timeout => 120, :debug => false})
   end
   Capybara.default_driver = :poltergeist  
 end 

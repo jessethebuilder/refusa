@@ -16,7 +16,6 @@ def noko_page
   Nokogiri::HTML.parse(page.html)
 end
 
-def login_url
-  'http://ezproxy.pasadenapubliclibrary.net/login?url=http://www.referenceusa.com/login'
+def library_name
+   /\/ezproxy\.(.+?)\./.match(@login_protocol[:url])[1]
 end
-

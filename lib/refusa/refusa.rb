@@ -14,11 +14,10 @@ class Refusa
     SwingUtilities.invoke_later do
       begin
         f = MainForm.new
-      rescue Exception => e
-        puts e
-        F.log_error(e)
-        puts '00000000000000000000011-0293-1209'
-        System.exit(0)
+      # rescue Exception => e
+        # puts e
+        # F.log_error(e)
+        # System.exit(0)
       ensure
         @db.close if @db
       end
