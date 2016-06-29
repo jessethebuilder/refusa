@@ -30,8 +30,10 @@ class LibWalker < Walker
   
   def reset_query
     @form.reset_query
-    url = session.current_url
-    session.visit url
+    page.click_link 'Clear Search'
+    # wait_until_query_is_ready
+    uncheck_all_query_boxes
+    check_all_query_boxes
   end
   
   def fill_state_combo_box
@@ -126,12 +128,16 @@ class LibWalker < Walker
   end
   
   QUERY_CHECKBOXES = ['cs-CityState', 'cs-ZipCode', 'cs-MetroArea', 'cs-County']
+  QUERY_BOXES = ['phCityState', 'phMetroArea', 'phCounty', 'phZipCode']
   
   def check_all_query_boxes
     QUERY_CHECKBOXES.each do |box|
       session.check box
     end
-    wait_until_query_is_ready  
+   
+    QUERY_BOXES.each do |box|
+      wait_until{ page.has_css?("##{box} div") }   
+    end
   end
   
   def uncheck_all_query_boxes(except)
@@ -140,6 +146,9 @@ class LibWalker < Walker
     arr.each do |box|
       session.uncheck box
     end
-    wait_until_query_is_ready
+    
+    QUERY_BOXES.each do |box|
+      wait_until{ !page.has_css?("##{box} div") }   
+    end
   end
 end

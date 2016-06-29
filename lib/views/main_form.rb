@@ -1,5 +1,6 @@
 class MainForm < JFrame
-  attr_accessor :city_combo_box, :state_combo_box, :metro_area_combo_box, :county_combo_box, :zip_field, :debug, :search_count_label
+  attr_accessor :city_combo_box, :state_combo_box, :metro_area_combo_box, :county_combo_box, :zip_field, :debug, :search_count_label,
+                :dump_people_button, :dump_businesses_button
   # include Capybara::DSL
   # include ScrapeUtilities
   
@@ -10,21 +11,25 @@ class MainForm < JFrame
       puts 'dead'
       System.exit(0)
     end
-    
-    @walker = LibWalker.new(self)
-    
+        
     set_size(600, 400)
     set_visible(true)
     set_default_close_operation(JFrame::EXIT_ON_CLOSE)
+
+    @walker = LibWalker.new(self)
     
     status_panel
     main_panel
     debug_panel  
     
+    
     #DEBUG =----------------------------------------------------------=========############################
-    @walker.instance_variable_set(:@search_type, :people)
-    @walker.login_user
+    # @walker.instance_variable_set(:@search_type, :people)
+    # @walker.login_user
   end
+  
+  
+  
   
   #------- Main Panel ------------------------
   def main_panel
@@ -67,20 +72,41 @@ class MainForm < JFrame
   end
   
   def options_button_rows(panel)
-    dump_button = JButton.new('Dump')
-      dump_button.add_action_listener do 
-        nil
-      end
-    panel.add(dump_button)
+    dump_people_button = JButton.new("People (#{@walker.entry_count(:people)})")
+    dump_people_button.add_action_listener do 
+      dump(:people)
+    end
+    panel.add(dump_people_button)
     
-    panel.add(JLabel.new(''))
-   
+    dump_businesses_button = JButton.new("Businesses (#{@walker.entry_count(:businesses)})")
+    dump_businesses_button.add_action_listener do 
+      nil
+    end
+    panel.add(dump_businesses_button)
+    
     reset_button = JButton.new('Reset')
     panel.add reset_button
     reset_button.add_action_listener do
       @walker.reset_search
+    end    
+  end
+  
+  def dump(type)
+    csv = CSV.generate do |c|
+      @walker.db[type].each do |r|
+        c << r.values
+      end
     end
     
+    file_name = "#{type.to_s}_#{Time.now.strftime('%m-%d-%y_%H-%M')}.csv"
+    F.write(file_name, csv)
+    set_status("#{file_name} Saved!")
+    @walker.db[type].delete
+    update_dump_button(type)
+  end
+  
+  def update_dump_button(type)
+    send("dump_#{type}_button").set_text("#{type.capitalize} (#{@walker.entry_count(type)})")
   end
       
   

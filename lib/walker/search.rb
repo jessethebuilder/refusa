@@ -1,22 +1,37 @@
 class LibWalker < Walker
-  def search
+  def search(first_page = 1)
+    current_page = first_page
     set_search_parameters
     page.click_link 'View Results'
-    wait_until{ page.has_css?('.action-view-record') }
-    @form.debug.set_text(page.html)
-    F.write('x.html', page.html)
+    # @form.debug.set_text(page.html)
     
-    
-    # index_page = SearchIndexPage.new(page)
-    # index_page.follow_and_parse_pages!
-    
+    begin
+      while true 
+        wait_for_search_results
+        wait_for_origin_loading
+        ResultsPage.new(noko_page, @search_type, @db).parse_and_save
+        puts "PAGE: #{current_page} SAVED--------------------------"
+        current_page += 1
+        page.first('.page').click
+        page_field = '.menuPagerBar:first-child .pager .text'
+        wait_until{ page.has_css?(page_field) }
+        page.fill_in page_field, :with => current_page
+        page.find('body').native.send_key("\t")
+      end
+    ensure
+      F.write('search.html', page.html)  
+    end  
   end
  
+  def wait_for_search_results 
+    wait_until{ page.has_css?('#searchResultsPage') }     
+  end
+  
   def show_count
-    F.write('h.html', page.html)
     set_search_parameters
     page.click_link('Update Count')
     @form.search_count_label.set_text("Count: #{get_count}")  
+    reset_query
   end
   
   def reset_search

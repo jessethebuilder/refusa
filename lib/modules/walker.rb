@@ -15,12 +15,13 @@ end
 
 Capybara.register_driver :poltergeist do |app|
   Capybara::Poltergeist::Driver.new(app, {:phantomjs => File.absolute_path('..\..\vendor\phantomjs\bin\phantomjs.exe'), 
-                                          :timeout => 120, :debug => true})
+                                          :timeout => 120, :debug => false, :js_errors => false})
   # Capybara::Poltergeist::Driver.new(app, {:timeout => 120, :debug => false})                                          
 end
 Capybara.default_driver = :poltergeist  
 
 class Walker 
+  
   include ScrapeUtilities
   
   def session
