@@ -25,7 +25,7 @@ Jdbc::SQLite3.load_driver
    }
 ]
 
-def db
+def set_db
   @db ||= build_db
 end 
 

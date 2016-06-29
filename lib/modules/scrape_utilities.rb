@@ -2,8 +2,8 @@ module ScrapeUtilities
   def wait_until
     #expects block
     while true
-      sleep 1
       return if yield
+      sleep 1
     end
   end
 end

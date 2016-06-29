@@ -1,0 +1,6 @@
+#!/usr/bin/env jruby
+
+require_relative '../lib/refusa.rb'
+
+Refusa.new
+

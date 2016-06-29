@@ -1,6 +1,6 @@
 require_relative 'config'
 require_relative 'db'
-require_relative 'walker'
+require_relative 'lib_walker'
 require_relative 'views'
 
 # require 'refusa'
